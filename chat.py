@@ -6,8 +6,10 @@ import time
 
 
 def ServerChat(token, message_list, channel_id, delay):
-    da = DiscordAccount
+    da = DiscordAccount()
     if token:
+        print(token)
+        print(type(token))
         da.set_token(token)
         while True:
             for message in message_list:
