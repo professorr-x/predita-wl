@@ -1,6 +1,13 @@
 {
   "license_key": "DEVELOPMENT",
   "main_account_token": "OTI2OTgzMzU0MjcwNzc3Mzc0.YeRRUQ.5aXfsgryGKUnzL2AuUYAVsMKwRo",
+  "join_server_with_code":{
+    "server_invite_code":"monsterapeclub",
+    "server_id":"929363884790390784",
+    "verification_channel_id":"931215431216300092",
+    "server_verification_code":"421ac72b",
+    "join_server_delay": 100
+  },
   "chat": {
       "channel_id":"782265110340960276",
       "message_delay":60
