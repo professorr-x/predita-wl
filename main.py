@@ -5,23 +5,34 @@ from colorama import init
 from colorama import Fore
 from chat import ServerChat
 from join_server import JoinServer
+from itertools import cycle
 
 colorama.init()
 init(autoreset=True)
 
-filename = os.path.join(os.path.dirname(sys.executable), 'config.json')
+config_filename = os.path.join(os.path.dirname(sys.executable), 'config.json')
+accounts_filename = os.path.join(os.path.dirname(sys.executable), 'accounts.txt')
+proxies_filename = os.path.join(os.path.dirname(sys.executable), 'proxies.txt')
 
 
-with open(filename, "r") as f:
+with open(config_filename, "r") as f:
     config = json.load(f)
 
 def read_accounts():
     accounts = []
-    with open("accounts.txt", "r") as f:
+    with open(accounts_filename, "r") as f:
         for line in f:
             line = line.replace("\n", "")
             accounts.append(line)
     return accounts
+
+def GetProxies():
+    with open(proxies_filename, 'r') as temp_file:
+        proxies = [line.rstrip('\n') for line in temp_file]
+    return proxies
+
+proxies = GetProxies()
+proxy_pool = cycle(proxies)
 
 
 if __name__ == "__main__":
@@ -40,8 +51,8 @@ if __name__ == "__main__":
             channel_id = config['join_server_with_code']['verification_channel_id']
             verification_code = config['join_server_with_code']['server_verification_code']
             join_server_delay = config['join_server_with_code']['join_server_delay']
-            
-            JoinServer(user_accounts, invite_code, server_id, channel_id, verification_code, join_server_delay)
+
+            JoinServer(user_accounts, invite_code, server_id, channel_id, verification_code, join_server_delay, proxy_pool)
 
 
 

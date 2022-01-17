@@ -1,14 +1,6 @@
 from itertools import cycle
 
-def GetProxies():
-    with open('proxies.txt', 'r') as temp_file:
-        proxies = [line.rstrip('\n') for line in temp_file]
-    return proxies
-
-proxies = GetProxies()
-proxy_pool = cycle(proxies)
-
-def GetProxy():
+def GetProxy(proxy_pool):
     proxy = next(proxy_pool)
     if len(proxy.split(':')) == 4:
         splitted = proxy.split(':')
