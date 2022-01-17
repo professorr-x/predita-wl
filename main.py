@@ -16,7 +16,7 @@ with open(filename, "r") as f:
 
 if __name__ == "__main__":
     if config["license_key"] == "DEVELOPMENT":
-        option = input(Fore.CYAN + "1) Silent Chat In Servers \n ")
+        option = input(Fore.CYAN + "    1. Silent Chat In Servers \n ")
         if option == "1":
             token = config['main_account_token']
             message_list = config['message_list']
