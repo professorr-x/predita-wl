@@ -5,7 +5,6 @@ from colorama import Fore
 from chat import ServerChat
 
 
-
 init(autoreset=True)
 
 filename = os.path.join(os.path.dirname(sys.executable), 'config.json')
