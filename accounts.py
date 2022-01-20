@@ -192,24 +192,19 @@ class DiscordAccount:
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Dest": "empty",
         }
-
-        res = self.client.delete(
-            "https://discord.com/api/v9/channels/{}/messages/{}".format(
-                channel_id, message_id
-            ),
-            headers=headers,
-        )
-
-        if res.status_code == 204:
-            return True
-        else:
+        while True:
             res = self.client.delete(
                 "https://discord.com/api/v9/channels/{}/messages/{}".format(
                     channel_id, message_id
                 ),
                 headers=headers,
             )
+
             if res.status_code == 204:
                 return True
+            elif res.status_code == 429:
+                data = res.json()
+                retry = data['retry_after']
+                time.sleep(round(retry))
             else:
                 return False
