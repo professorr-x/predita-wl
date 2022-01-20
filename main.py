@@ -7,6 +7,33 @@ from chat import ServerChat
 from join_server import JoinServer
 from itertools import cycle
 from manual_mode import ManualMode
+import psycopg2
+from psycopg2 import Error
+
+try:
+    # Connect to an existing database
+    connection = psycopg2.connect(user="predate_key_checker",
+                                  password="ZB)~6vnuT8N[",
+                                  host="78.141.225.199",
+                                  port="5432",
+                                  database="predita")
+
+    # Create a cursor to perform database operations
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * from keys;")
+    # Fetch result
+    record = cursor.fetchone()
+    development_key=record[1]
+
+except (Exception, Error) as error:
+    print("Error during key check")
+finally:
+    if (connection):
+        cursor.close()
+        connection.close()
+
+
 
 colorama.init()
 init(autoreset=True)
@@ -18,7 +45,7 @@ manual_accounts_filename = os.path.join(
     os.path.dirname(sys.executable), "manual_accounts.txt"
 )
 
-if sys.executable == "/opt/homebrew/opt/python@3.9/bin/python3.9":
+if sys.executable == "/Users/yas/Documents/preditah/preditah_bot/venv/bin/python":
     config_filename = "config.json"
     accounts_filename = "accounts.txt"
     proxies_filename = "proxies.txt"
@@ -48,10 +75,10 @@ proxy_pool = cycle(proxies)
 
 
 if __name__ == "__main__":
-    if config["license_key"] == "DEVELOPMENT":
+    if config["license_key"] == development_key:
         option = input(
             Fore.CYAN
-            + "1. Silent Chat In Servers \n 2. Join Server & Verify w/ Code \n 3. Manual Mode \n"
+            + "1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n"
         )
         if option == "1":
             token = config["main_account_token"]
