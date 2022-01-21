@@ -1,10 +1,11 @@
 import json
-import os, sys
+import os
+import sys
 import colorama
 from colorama import init
 from colorama import Fore
 from chat import ServerChat
-from join_server import JoinServer
+from join_server import JoinServer, JoinServerReact, JoinServerReactConfirmation
 from itertools import cycle
 from manual_mode import ManualMode
 import psycopg2
@@ -24,7 +25,7 @@ try:
     cursor.execute("SELECT * from keys;")
     # Fetch result
     record = cursor.fetchone()
-    development_key=record[1]
+    development_key = record[1]
 
 except (Exception, Error) as error:
     print("Error during key check")
@@ -34,12 +35,12 @@ finally:
         connection.close()
 
 
-
 colorama.init()
 init(autoreset=True)
 
 config_filename = os.path.join(os.path.dirname(sys.executable), "config.json")
-accounts_filename = os.path.join(os.path.dirname(sys.executable), "accounts.txt")
+accounts_filename = os.path.join(
+    os.path.dirname(sys.executable), "accounts.txt")
 proxies_filename = os.path.join(os.path.dirname(sys.executable), "proxies.txt")
 manual_accounts_filename = os.path.join(
     os.path.dirname(sys.executable), "manual_accounts.txt"
@@ -78,7 +79,7 @@ if __name__ == "__main__":
     if config["license_key"] == development_key:
         option = input(
             Fore.CYAN
-            + "1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n"
+            + "1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n"
         )
         if option == "1":
             token = config["main_account_token"]
@@ -107,5 +108,24 @@ if __name__ == "__main__":
         elif option == "3":
             user_accounts = read_accounts(manual_accounts_filename)
             ManualMode(user_accounts, proxy_pool)
+        elif option == "4":
+            user_accounts = read_accounts(accounts_filename)
+            server_invite_id = config["react_to_join_server"]["server_invite_code"]
+            channel_id = config["react_to_join_server"]["verification_channel_id"]
+            message_id = config["react_to_join_server"]["verification_message_id"]
+            react_btn = config["react_to_join_server"]["react_verification_btn_id"]
+            delay = config["react_to_join_server"]["join_server_delay"]
+            JoinServerReact(user_accounts, server_invite_id,
+                            channel_id, message_id, react_btn, delay, proxy_pool)
+        elif option == "5":
+            user_accounts = read_accounts(accounts_filename)
+            server_invite_id = config["react_to_join_server"]["server_invite_code"]
+            server_id = config["react_to_join_server"]["server_id"]
+            channel_id = config["react_to_join_server"]["verification_channel_id"]
+            message_id = config["react_to_join_server"]["verification_message_id"]
+            react_btn = config["react_to_join_server"]["react_verification_btn_id"]
+            delay = config["react_to_join_server"]["join_server_delay"]
+            JoinServerReactConfirmation(
+                user_accounts, server_id, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool)
     else:
         print("INVALID KEY")

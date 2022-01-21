@@ -16,9 +16,16 @@ def JoinServer(
     proxy_pool,
 ):
     for token in user_accounts:
-        print(Fore.CYAN + "[{}] Getting Proxies...".format(str(datetime.now())))
+        try:
+            token = token.split(":")[2]
+        except:
+            pass
+
+        print(Fore.CYAN +
+              "[{}] Getting Proxies...".format(str(datetime.now())))
         proxy = proxy_processor.GetProxy(proxy_pool)
-        print(Fore.CYAN + "[{}] Using Proxy {}".format(str(datetime.now()), proxy))
+        print(Fore.CYAN +
+              "[{}] Using Proxy {}".format(str(datetime.now()), proxy))
         da = DiscordAccount()
         da.set_token(token)
         print(
@@ -56,7 +63,8 @@ def JoinServer(
                     )
                     tries += 1
         else:
-            print(Fore.RED + "[{}] Unable To Join Server".format(str(datetime.now())))
+            print(
+                Fore.RED + "[{}] Unable To Join Server".format(str(datetime.now())))
         print(
             Fore.CYAN
             + "[{}] Chilling For {}s".format(str(datetime.now()), join_server_delay)
@@ -64,3 +72,86 @@ def JoinServer(
         time.sleep(join_server_delay)
     else:
         print(Fore.RED + "[{}] Unable To Login".format(str(datetime.now())))
+
+
+def JoinServerReact(user_accounts, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool):
+    for token in user_accounts:
+        try:
+            token = token.split(":")[2]
+        except:
+            pass
+
+        print(Fore.CYAN +
+              "[{}] Getting Proxies...".format(str(datetime.now())))
+        proxy = proxy_processor.GetProxy(proxy_pool)
+        print(Fore.CYAN +
+              "[{}] Using Proxy {}".format(str(datetime.now()), proxy))
+        da = DiscordAccount()
+        da.set_token(token)
+        joined = da.join_server(server_invite_id, proxy)
+        if joined:
+            verification = da.react_to_verify(
+                channel_id, message_id, react_btn)
+            if verification:
+                print(
+                    Fore.GREEN + "[{}] Successfully Verified On Server".format(
+                        str(datetime.now())
+                    )
+                )
+            else:
+                print(
+                    Fore.RED
+                    + "[{}] Unable To Verify On Server".format(str(datetime.now()))
+                )
+        else:
+            print(
+                Fore.RED +
+                "[{}] Unable To Join Server".format(str(datetime.now()))
+            )
+        time.sleep(delay)
+
+
+def JoinServerReactConfirmation(user_accounts, server_id, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool):
+    for token in user_accounts:
+        try:
+            token = token.split(":")[2]
+        except:
+            pass
+
+        print(Fore.CYAN +
+              "[{}] Getting Proxies...".format(str(datetime.now())))
+        proxy = proxy_processor.GetProxy(proxy_pool)
+        print(Fore.CYAN +
+              "[{}] Using Proxy {}".format(str(datetime.now()), proxy))
+        da = DiscordAccount()
+        da.set_token(token)
+        joined = da.join_server(server_invite_id, proxy)
+        if joined:
+            member_verified = da.post_member_verification(server_id, proxy)
+            if member_verified:
+                print(Fore.GREEN +
+                      "[{}] Accepted T&C".format(str(datetime.now())))
+                verification = da.react_to_verify(
+                    channel_id, message_id, react_btn)
+                if verification:
+                    print(
+                        Fore.GREEN + "[{}] Successfully Verified On Server".format(
+                            str(datetime.now())
+                        )
+                    )
+                else:
+                    print(
+                        Fore.RED
+                        + "[{}] Unable To Verify On Server".format(str(datetime.now()))
+                    )
+            else:
+                print(
+                    Fore.RED
+                    + "[{}] Unable To Accept T&C".format(str(datetime.now()))
+                )
+        else:
+            print(
+                Fore.RED +
+                "[{}] Unable To Join Server".format(str(datetime.now()))
+            )
+        time.sleep(delay)
