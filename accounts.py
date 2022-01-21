@@ -54,7 +54,7 @@ class DiscordAccount:
         if res.status_code == 200:
             return True
         else:
-            return False
+             return False
 
     def post_member_verification(self, server_id, proxy):
         proxies = {"http": proxy, "https": proxy}
@@ -208,3 +208,53 @@ class DiscordAccount:
                 time.sleep(round(retry))
             else:
                 return False
+
+    def react_to_verify(self, channel_id, message_id, emoji_id):
+        """
+        React to verify yourself on a server
+
+        params
+
+        channel_id: str
+        message_id: str
+        emoji_id: str - found by inspect the emoji
+
+        """
+        headers = {
+            "sec-ch-ua": '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
+            "X-Debug-Options": "bugReporterEnabled",
+            "sec-ch-ua-mobile": "?0",
+            "Authorization": self.token,
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
+            "X-Discord-Locale": "en-US",
+            "sec-ch-ua-platform": '"macOS"',
+            "Accept": "*/*",
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Dest": "empty",
+        }
+
+        res = self.client.put(
+            "https://discord.com/api/v9/channels/{}/messages/{}/reactions/{}/%40me".format(
+                channel_id, message_id, emoji_id
+            ),
+            headers=headers,
+            data={},
+        )
+
+        if res.status_code == 204:
+            return True
+        else:
+            res = self.client.put(
+                "https://discord.com/api/v9/guilds/{}/requests/@me".format(message_id),
+                headers=headers,
+                data={},
+            )
+            res = self.client.put(
+                "https://discord.com/api/v9/channels/{}/messages/{}/reactions/{}/%40me".format(
+                    channel_id, message_id, emoji_id
+                ),
+                headers=headers,
+                data={},
+            )
+            return False

@@ -1,16 +1,24 @@
 {
   "license_key": "DEVELOPMENT",
-  "main_account_token": "OTI2OTgzMzU0MjcwNzc3Mzc0.YeRRUQ.5aXfsgryGKUnzL2AuUYAVsMKwRo",
+  "main_account_token": "",
   "join_server_with_code":{
-    "server_invite_code":"monsterapeclub",
-    "server_id":"929363884790390784",
-    "verification_channel_id":"931215431216300092",
-    "server_verification_code":"421ac72b",
-    "join_server_delay": 100
+    "server_invite_code":"hypersloths",
+    "server_id":"920597044396191746",
+    "verification_channel_id":"933027821113204756",
+    "server_verification_code":"WJwpSw",
+    "join_server_delay": 10
+  },
+  "react_to_join_server":{
+    "server_invite_code":"4bjpM4Jm",
+    "server_id":"929502440213065848",
+    "verification_channel_id":"929676263680004106",
+    "verification_message_id": "932349982802051102",
+    "react_verification_btn_id":"%E2%9C%85",
+    "join_server_delay": 10
   },
   "chat": {
-      "channel_id":"782265110340960276",
-      "message_delay":60
+      "channel_id":"933757899124113419",
+      "message_delay":1
     },
     "message_list": [
       "hello",
