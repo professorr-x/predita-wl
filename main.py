@@ -4,6 +4,7 @@ import sys
 import colorama
 from colorama import init
 from colorama import Fore
+from accounts import DiscordAccount
 from chat import ServerChat
 from join_server import JoinServer, JoinServerReact, JoinServerReactConfirmation
 from itertools import cycle
@@ -79,7 +80,7 @@ if __name__ == "__main__":
     if config["license_key"] == development_key:
         option = input(
             Fore.CYAN
-            + "1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n"
+            + "1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n6. Check Tokens \n"
         )
         if option == "1":
             token = config["main_account_token"]
@@ -127,5 +128,9 @@ if __name__ == "__main__":
             delay = config["react_to_join_server"]["join_server_delay"]
             JoinServerReactConfirmation(
                 user_accounts, server_id, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool)
+        elif option == "6":
+            user_accounts = read_accounts(accounts_filename)
+            da = DiscordAccount()
+            da.account_checker(user_accounts, proxy_pool)
     else:
         print("INVALID KEY")
