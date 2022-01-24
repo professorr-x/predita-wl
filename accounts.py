@@ -94,7 +94,9 @@ class DiscordAccount:
             if res.status_code == 200:
                 data = json.dumps(res.json())
 
-                url = "https://discord.com/api/v9/guilds/{}/requests/@me".format(server_id)
+                url = "https://discord.com/api/v9/guilds/{}/requests/@me".format(
+                    server_id
+                )
 
                 headers = {
                     "sec-ch-ua": '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
@@ -265,7 +267,9 @@ class DiscordAccount:
                 return True
             else:
                 res = self.client.put(
-                    "https://discord.com/api/v9/guilds/{}/requests/@me".format(message_id),
+                    "https://discord.com/api/v9/guilds/{}/requests/@me".format(
+                        message_id
+                    ),
                     headers=headers,
                     data={},
                 )
@@ -301,12 +305,12 @@ class DiscordAccount:
             res = self.client.get(
                 "https://discord.com/api/v9/users/@me", headers=headers, proxies=proxies
             )
+            if res.status_code == 401 or 200:
+                return res.status_code
+            else:
+                return False
         except Exception as e:
             print(e)
-
-        if res.status_code == 401 or 200:
-            return res.status_code
-        else:
             return False
 
     def account_checker(self, user_accounts, proxy_pool):
