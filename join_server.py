@@ -4,9 +4,23 @@ from datetime import datetime
 import proxy_processor
 from accounts import DiscordAccount
 import time
+from discord import Discord
+
+
+def write_to_file(verfication, name, token):
+    if verfication == 'verified':
+        filename = 'verified_{}.txt'.format(name)
+        with open(filename, 'a') as f:
+            f.write(token + '\n')
+    elif verfication == 'unverified':
+        filename = 'unverified_{}.txt'.format(name)
+        with open(filename, 'a') as f:
+            f.write(token + '\n')
+
 
 
 def JoinServer(
+    token,
     user_accounts,
     invite_code,
     server_id,
@@ -15,6 +29,9 @@ def JoinServer(
     join_server_delay,
     proxy_pool,
 ):
+    disc = Discord()
+    name = disc.get_server_name(token, server_id)
+    verified_accounts = 0
     for token in user_accounts:
         try:
             token = token.split(":")[2]
@@ -47,12 +64,14 @@ def JoinServer(
             )
             while tries < 3:
                 if code_verification:
+                    verified_accounts += 1
                     print(
                         Fore.GREEN
-                        + "[{}] Successfully Verified, Process Complete".format(
-                            str(datetime.now())
+                        + "[{}] Successfully Verified | Verified = {}".format(
+                            str(datetime.now()), verified_accounts
                         )
                     )
+                    write_to_file('verified', name, token)
                     break
                 else:
                     print(
@@ -61,20 +80,23 @@ def JoinServer(
                             str(datetime.now())
                         )
                     )
+                    write_to_file('unverified', name, token)
                     tries += 1
         else:
             print(
                 Fore.RED + "[{}] Unable To Join Server".format(str(datetime.now())))
+            write_to_file('unverified', name, token)
         print(
             Fore.CYAN
             + "[{}] Chilling For {}s".format(str(datetime.now()), join_server_delay)
         )
         time.sleep(join_server_delay)
-    else:
-        print(Fore.RED + "[{}] Unable To Login".format(str(datetime.now())))
 
 
-def JoinServerReact(user_accounts, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool):
+def JoinServerReact(token, user_accounts, server_invite_id, server_id, channel_id, message_id, react_btn, delay, proxy_pool):
+    disc = Discord()
+    name = disc.get_server_name(token, server_id)
+    verified_accounts = 0
     for token in user_accounts:
         try:
             token = token.split(":")[2]
@@ -93,25 +115,32 @@ def JoinServerReact(user_accounts, server_invite_id, channel_id, message_id, rea
             verification = da.react_to_verify(
                 channel_id, message_id, react_btn)
             if verification:
+                verified_accounts += 1
                 print(
-                    Fore.GREEN + "[{}] Successfully Verified On Server".format(
-                        str(datetime.now())
+                    Fore.GREEN + "[{}] Successfully Verified On Server | Verified = {}".format(
+                        str(datetime.now()), verified_accounts
                     )
                 )
+                write_to_file('verified', name, token)
             else:
                 print(
                     Fore.RED
                     + "[{}] Unable To Verify On Server".format(str(datetime.now()))
                 )
+                write_to_file('unverified', name, token)
         else:
             print(
                 Fore.RED +
                 "[{}] Unable To Join Server".format(str(datetime.now()))
             )
+            write_to_file('unverified', name, token)
         time.sleep(delay)
 
 
-def JoinServerReactConfirmation(user_accounts, server_id, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool):
+def JoinServerReactConfirmation(token, user_accounts, server_id, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool):
+    disc = Discord()
+    name = disc.get_server_name(token, server_id)
+    verified_accounts = 0
     for token in user_accounts:
         try:
             token = token.split(":")[2]
@@ -134,24 +163,29 @@ def JoinServerReactConfirmation(user_accounts, server_id, server_invite_id, chan
                 verification = da.react_to_verify(
                     channel_id, message_id, react_btn)
                 if verification:
+                    verified_accounts += 1
                     print(
-                        Fore.GREEN + "[{}] Successfully Verified On Server".format(
-                            str(datetime.now())
+                        Fore.GREEN + "[{}] Successfully Verified On Server | Verified = {}".format(
+                            str(datetime.now()), verified_accounts
                         )
                     )
+                    write_to_file('verified', name, token)
                 else:
                     print(
                         Fore.RED
                         + "[{}] Unable To Verify On Server".format(str(datetime.now()))
                     )
+                    write_to_file('unverified', name, token)
             else:
                 print(
                     Fore.RED
                     + "[{}] Unable To Accept T&C".format(str(datetime.now()))
                 )
+                write_to_file('unverified', name, token)
         else:
             print(
                 Fore.RED +
                 "[{}] Unable To Join Server".format(str(datetime.now()))
             )
+            write_to_file('unverified', name, token)
         time.sleep(delay)

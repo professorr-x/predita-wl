@@ -89,6 +89,7 @@ if __name__ == "__main__":
             message_delay = config["chat"]["message_delay"]
             ServerChat(token, message_list, channel_id, message_delay)
         elif option == "2":
+            token = config["main_account_token"]
             user_accounts = read_accounts(accounts_filename)
             invite_code = config["join_server_with_code"]["server_invite_code"]
             server_id = config["join_server_with_code"]["server_id"]
@@ -98,6 +99,7 @@ if __name__ == "__main__":
             ]
             join_server_delay = config["join_server_with_code"]["join_server_delay"]
             JoinServer(
+                token,
                 user_accounts,
                 invite_code,
                 server_id,
@@ -110,15 +112,18 @@ if __name__ == "__main__":
             user_accounts = read_accounts(manual_accounts_filename)
             ManualMode(user_accounts, proxy_pool)
         elif option == "4":
+            token = config["main_account_token"]
             user_accounts = read_accounts(accounts_filename)
             server_invite_id = config["react_to_join_server"]["server_invite_code"]
+            server_id = config["react_to_join_server"]["server_id"]
             channel_id = config["react_to_join_server"]["verification_channel_id"]
             message_id = config["react_to_join_server"]["verification_message_id"]
             react_btn = config["react_to_join_server"]["react_verification_btn_id"]
             delay = config["react_to_join_server"]["join_server_delay"]
-            JoinServerReact(user_accounts, server_invite_id,
+            JoinServerReact(token, user_accounts, server_invite_id, server_id,
                             channel_id, message_id, react_btn, delay, proxy_pool)
         elif option == "5":
+            token = config["main_account_token"]
             user_accounts = read_accounts(accounts_filename)
             server_invite_id = config["react_to_join_server"]["server_invite_code"]
             server_id = config["react_to_join_server"]["server_id"]
@@ -127,7 +132,7 @@ if __name__ == "__main__":
             react_btn = config["react_to_join_server"]["react_verification_btn_id"]
             delay = config["react_to_join_server"]["join_server_delay"]
             JoinServerReactConfirmation(
-                user_accounts, server_id, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool)
+                token, user_accounts, server_id, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool)
         elif option == "6":
             user_accounts = read_accounts(accounts_filename)
             da = DiscordAccount()
