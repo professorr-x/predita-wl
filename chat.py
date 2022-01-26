@@ -60,7 +60,7 @@ def RecycledChat(token, channel_id, server_id, delay, delete_message_delay):
         print(Fore.RED + "[{}] No Token Provided".format(str(datetime.now())))
 
 
-def ServerChat(token, message_list, channel_id, delay, delete_message_delay):
+def ServerChat(token, message_list, channel_id, server_id, delay, delete_message_delay):
     disc = Discord()
     channel_name = disc.get_channel_name(token, channel_id)
     name = disc.get_server_name(token, server_id)

@@ -90,10 +90,16 @@ if __name__ == "__main__":
             token = config["main_account_token"]
             message_list = config["message_list"]
             channel_id = config["chat"]["channel_id"]
+            server_id = config["chat"]["server_id"]
             message_delay = config["chat"]["message_delay"]
             delete_message_delay = config["chat"]["delete_message_delay"]
             ServerChat(
-                token, message_list, channel_id, message_delay, delete_message_delay
+                token,
+                message_list,
+                channel_id,
+                server_id,
+                message_delay,
+                delete_message_delay,
             )
         elif option == "2":
             token = config["main_account_token"]
