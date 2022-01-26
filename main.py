@@ -5,7 +5,7 @@ import colorama
 from colorama import init
 from colorama import Fore
 from accounts import DiscordAccount
-from chat import ServerChat
+from chat import ServerChat, RecycledChat
 from join_server import JoinServer, JoinServerReact, JoinServerReactConfirmation
 from itertools import cycle
 from manual_mode import ManualMode
@@ -84,13 +84,14 @@ if __name__ == "__main__":
     if config["license_key"] == development_key:
         option = input(
             Fore.CYAN
-            + "1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n6. Check Tokens \n"
+            + "\n1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n6. Check Tokens \n7. Recycled Chat In Servers \n"
         )
         if option == "1":
             token = config["main_account_token"]
             message_list = config["message_list"]
             channel_id = config["chat"]["channel_id"]
             message_delay = config["chat"]["message_delay"]
+            delete_message_delay = config["chat"]["delete_message_delay"]
             ServerChat(token, message_list, channel_id, message_delay)
         elif option == "2":
             token = config["main_account_token"]
@@ -161,5 +162,11 @@ if __name__ == "__main__":
             user_accounts = read_accounts(accounts_filename)
             da = DiscordAccount()
             da.account_checker(user_accounts, proxy_pool)
+        elif option == "7":
+            token = config["main_account_token"]
+            channel_id = config["chat"]["channel_id"]
+            server_id = config["chat"]["server_id"]
+            message_delay = config["chat"]["message_delay"]
+            RecycledChat(token, channel_id, server_id, message_delay)
     else:
         print("INVALID KEY")

@@ -38,3 +38,16 @@ class Discord:
             print(e)
             name = channel_id
         return name
+
+    def get_message(self, token, channel_id):
+        url = "https://discord.com/api/v9/channels/{}/messages".format(channel_id)
+        self.headers["Authorization"] = token
+        try:
+            response = requests.get(url, headers=self.headers)
+            res = response.json()
+            len(res)
+            message = res[len(res)-1]['content']
+            return message
+        except Exception as e:
+            print(e)
+        return None

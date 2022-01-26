@@ -7,10 +7,38 @@ import ctypes
 from discord import Discord
 
 
-def ServerChat(token, message_list, channel_id, delay):
+def RecycledChat(token, channel_id, server_id, delay):
     disc = Discord()
-    name = disc.get_channel_name(token, channel_id)
-    title = "Predita WL - Chat - {}".format(name)
+    channel_name = disc.get_channel_name(token, channel_id)
+    name = disc.get_server_name(token, server_id)
+    title = "Predita WL - Chat - {} {}".format(channel_name, name)
+    ctypes.windll.kernel32.SetConsoleTitleW(title)
+    da = DiscordAccount()
+    if token:
+        da.set_token(token)
+        while True:
+            message = disc.get_message(token, channel_id)
+            sent_message = da.send_message(channel_id, message)
+            if sent_message != False:
+                print(
+                    Fore.GREEN
+                    + "[{}] Successfully Sent Message:  {}".format(
+                        str(datetime.now()), sent_message
+                    )
+                )
+                print(
+                    Fore.CYAN + "[{}] Delay for {}".format(str(datetime.now()), delay)
+                )
+                time.sleep(delay)
+    else:
+        print(Fore.RED + "[{}] No Token Provided".format(str(datetime.now())))
+
+
+def ServerChat(token, message_list, channel_id, delay, delete_message_delay):
+    disc = Discord()
+    channel_name = disc.get_channel_name(token, channel_id)
+    name = disc.get_server_name(token, server_id)
+    title = "Predita WL - Chat - {} {}".format(channel_name, name)
     ctypes.windll.kernel32.SetConsoleTitleW(title)
     da = DiscordAccount()
     if token:
@@ -27,6 +55,13 @@ def ServerChat(token, message_list, channel_id, delay):
                     )
                     channel_id = sent_message["channel_id"]
                     message_id = sent_message["id"]
+                    print(
+                        Fore.CYAN
+                        + "[{}] Delay for {}s before deleting".format(
+                            str(datetime.now()), delete_message_delay
+                        )
+                    )
+                    time.sleep(delete_message_delay)
                     deleted_msg = da.delete_message(channel_id, message_id)
 
                     if deleted_msg:
@@ -45,7 +80,9 @@ def ServerChat(token, message_list, channel_id, delay):
                         )
                     print(
                         Fore.CYAN
-                        + "[{}] Delay for {}".format(str(datetime.now()), delay)
+                        + "[{}] Delay for {}s, before next message".format(
+                            str(datetime.now()), delay
+                        )
                     )
                     time.sleep(delay)
     else:
