@@ -3,9 +3,15 @@ from colorama import Fore
 from datetime import datetime
 from accounts import DiscordAccount
 import time
+import ctypes
+from discord import Discord
 
 
 def ServerChat(token, message_list, channel_id, delay):
+    disc = Discord()
+    name = disc.get_channel_name(token, channel_id)
+    title = "Predita WL - Chat - {}".format(name)
+    ctypes.windll.kernel32.SetConsoleTitleW(title)
     da = DiscordAccount()
     if token:
         da.set_token(token)
@@ -38,11 +44,9 @@ def ServerChat(token, message_list, channel_id, delay):
                             )
                         )
                     print(
-                            Fore.CYAN
-                            + "[{}] Delay for {}".format(
-                                str(datetime.now()), delay
-                            )
-                        )
+                        Fore.CYAN
+                        + "[{}] Delay for {}".format(str(datetime.now()), delay)
+                    )
                     time.sleep(delay)
     else:
         print(Fore.RED + "[{}] No Token Provided".format(str(datetime.now())))
