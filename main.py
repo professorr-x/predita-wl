@@ -17,11 +17,13 @@ ctypes.windll.kernel32.SetConsoleTitleW("Predita WL")
 
 try:
     # Connect to an existing database
-    connection = psycopg2.connect(user="predate_key_checker",
-                                  password="ZB)~6vnuT8N[",
-                                  host="78.141.225.199",
-                                  port="5432",
-                                  database="predita")
+    connection = psycopg2.connect(
+        user="predate_key_checker",
+        password="ZB)~6vnuT8N[",
+        host="78.141.225.199",
+        port="5432",
+        database="predita",
+    )
 
     # Create a cursor to perform database operations
     cursor = connection.cursor()
@@ -34,7 +36,7 @@ try:
 except (Exception, Error) as error:
     print("Error during key check")
 finally:
-    if (connection):
+    if connection:
         cursor.close()
         connection.close()
 
@@ -43,8 +45,7 @@ colorama.init()
 init(autoreset=True)
 
 config_filename = os.path.join(os.path.dirname(sys.executable), "config.json")
-accounts_filename = os.path.join(
-    os.path.dirname(sys.executable), "accounts.txt")
+accounts_filename = os.path.join(os.path.dirname(sys.executable), "accounts.txt")
 proxies_filename = os.path.join(os.path.dirname(sys.executable), "proxies.txt")
 manual_accounts_filename = os.path.join(
     os.path.dirname(sys.executable), "manual_accounts.txt"
@@ -112,6 +113,7 @@ if __name__ == "__main__":
                 proxy_pool,
             )
         elif option == "3":
+            ctypes.windll.kernel32.SetConsoleTitleW("Predita WL - Manual Mode")
             user_accounts = read_accounts(manual_accounts_filename)
             ManualMode(user_accounts, proxy_pool)
         elif option == "4":
@@ -123,8 +125,17 @@ if __name__ == "__main__":
             message_id = config["react_to_join_server"]["verification_message_id"]
             react_btn = config["react_to_join_server"]["react_verification_btn_id"]
             delay = config["react_to_join_server"]["join_server_delay"]
-            JoinServerReact(token, user_accounts, server_invite_id, server_id,
-                            channel_id, message_id, react_btn, delay, proxy_pool)
+            JoinServerReact(
+                token,
+                user_accounts,
+                server_invite_id,
+                server_id,
+                channel_id,
+                message_id,
+                react_btn,
+                delay,
+                proxy_pool,
+            )
         elif option == "5":
             token = config["main_account_token"]
             user_accounts = read_accounts(accounts_filename)
@@ -135,8 +146,18 @@ if __name__ == "__main__":
             react_btn = config["react_to_join_server"]["react_verification_btn_id"]
             delay = config["react_to_join_server"]["join_server_delay"]
             JoinServerReactConfirmation(
-                token, user_accounts, server_id, server_invite_id, channel_id, message_id, react_btn, delay, proxy_pool)
+                token,
+                user_accounts,
+                server_id,
+                server_invite_id,
+                channel_id,
+                message_id,
+                react_btn,
+                delay,
+                proxy_pool,
+            )
         elif option == "6":
+            ctypes.windll.kernel32.SetConsoleTitleW("Predita WL - Account Checker")
             user_accounts = read_accounts(accounts_filename)
             da = DiscordAccount()
             da.account_checker(user_accounts, proxy_pool)

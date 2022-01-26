@@ -26,3 +26,15 @@ class Discord:
             print(e)
             name = server_id
         return name
+
+    def get_channel_name(self, token, channel_id):
+        url = "https://discord.com/api/v9/channels/{}".format(channel_id)
+        self.headers["Authorization"] = token
+        try:
+            response = requests.get(url, headers=self.headers)
+            res = response.json()
+            name = res["name"]
+        except Exception as e:
+            print(e)
+            name = channel_id
+        return name
