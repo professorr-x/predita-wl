@@ -11,6 +11,9 @@ from itertools import cycle
 from manual_mode import ManualMode
 import psycopg2
 from psycopg2 import Error
+import ctypes
+
+ctypes.windll.kernel32.SetConsoleTitleW("Predita WL")
 
 try:
     # Connect to an existing database
