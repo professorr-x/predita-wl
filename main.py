@@ -9,38 +9,11 @@ from chat import ServerChat, RecycledChat
 from join_server import JoinServer, JoinServerReact, JoinServerReactConfirmation
 from itertools import cycle
 from manual_mode import ManualMode
-import psycopg2
-from psycopg2 import Error
+from discord import Discord
 import ctypes
+import requests
 
 ctypes.windll.kernel32.SetConsoleTitleW("Predita WL")
-
-try:
-    # Connect to an existing database
-    connection = psycopg2.connect(
-        user="predate_key_checker",
-        password="ZB)~6vnuT8N[",
-        host="78.141.225.199",
-        port="5432",
-        database="predita",
-    )
-
-    # Create a cursor to perform database operations
-    cursor = connection.cursor()
-
-    cursor.execute("SELECT * from keys;")
-    # Fetch result
-    record = cursor.fetchone()
-    development_key = record[1]
-
-except (Exception, Error) as error:
-    print("Error during key check")
-finally:
-    if connection:
-        cursor.close()
-        connection.close()
-
-
 colorama.init()
 init(autoreset=True)
 
@@ -76,12 +49,35 @@ def GetProxies():
     return proxies
 
 
+def key_check(key):
+    url = "http://78.141.225.199:8010/key"
+    payload = {"key": key}
+    headers = {"accept": "application/json"}
+    try:
+        res = requests.get(url, headers=headers, params=payload)
+        data = res.json()
+        try:
+            if data["error"]:
+                return None
+        except:
+            return data
+    except Exception as e:
+        print(e)
+        return None
+
+
 proxies = GetProxies()
 proxy_pool = cycle(proxies)
 
 
 if __name__ == "__main__":
-    if config["license_key"] == development_key:
+    print(Fore.CYAN + "\nPREDITAH \n")
+    user = key_check(config["license_key"])
+    if user != None:
+        token = config["main_account_token"]
+        disc = Discord()
+        name = disc.get_user(token, user["discord_id"])
+        print(Fore.CYAN + "Welcome, " + name)
         option = input(
             Fore.CYAN
             + "\n1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n6. Check Tokens \n7. Recycled Chat In Servers \n"
