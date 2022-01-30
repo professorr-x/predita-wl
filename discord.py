@@ -46,8 +46,21 @@ class Discord:
             response = requests.get(url, headers=self.headers)
             res = response.json()
             len(res)
-            message = res[len(res)-1]['content']
+            message = res[len(res) - 1]["content"]
             return message
         except Exception as e:
             print(e)
-        return None
+            return None
+
+    def get_user(self, token, discord_id):
+        url = "https://discord.com/api/v9/users/{}".format(discord_id)
+        self.headers["Authorization"] = token
+
+        try:
+            response = requests.get(url, headers=self.headers)
+            res = response.json()
+            name = res["username"] + "#" + res["discriminator"]
+            return name
+        except Exception as e:
+            print(e)
+            return None
