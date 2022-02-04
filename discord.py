@@ -1,5 +1,5 @@
 import requests
-
+import time
 
 class Discord:
     headers = {
@@ -27,6 +27,22 @@ class Discord:
             name = server_id
         return name
 
+    def get_channels(self, token, server_id):
+        url = "https://discord.com/api/v9/guilds/{}/channels".format(server_id)
+        self.headers["Authorization"] = token
+        try:
+            response = requests.get(url, headers=self.headers)
+            res = response.json()
+            if response.status_code == 200:
+                return res
+            elif response.status_code == 429:
+                time.sleep(round(res['retry_after']))
+            else:
+                return None
+        except Exception as e:
+            print(e)
+            return None
+
     def get_channel_name(self, token, channel_id):
         url = "https://discord.com/api/v9/channels/{}".format(channel_id)
         self.headers["Authorization"] = token
@@ -39,7 +55,7 @@ class Discord:
             name = channel_id
         return name
 
-    def get_message(self, token, channel_id):
+    def get_messages(self, token, channel_id):
         url = "https://discord.com/api/v9/channels/{}/messages".format(channel_id)
         self.headers["Authorization"] = token
         try:
@@ -61,6 +77,36 @@ class Discord:
             res = response.json()
             name = res["username"] + "#" + res["discriminator"]
             return name
+        except Exception as e:
+            print(e)
+            return None
+
+    def get_channel_messages(self, token, channel_id):
+        url = "https://discord.com/api/v9/channels/{}/messages".format(channel_id)
+        self.headers["Authorization"] = token
+        try:
+            response = requests.get(url, headers=self.headers)
+            if response.status_code == 200:
+                res = response.json()
+                return res
+            else:
+                return None
+        except Exception as e:
+            print(e)
+            return None
+
+    def get_servers(self, token):
+        url = "https://discord.com/api/v9/users/@me/guilds"
+        self.headers["Authorization"] = token
+        try:
+            response = requests.get(url, headers=self.headers)
+            res = response.json()
+            if response.status_code == 200:
+                return res
+            elif response.status_code == 429:
+                time.sleep(round(res['retry_after']))
+            else:
+                return None
         except Exception as e:
             print(e)
             return None

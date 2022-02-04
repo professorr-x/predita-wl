@@ -12,8 +12,9 @@ from manual_mode import ManualMode
 from discord import Discord
 import ctypes
 import requests
+from giveaways import giveaway_monitor
 
-ctypes.windll.kernel32.SetConsoleTitleW("Predita WL")
+ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL")
 colorama.init()
 init(autoreset=True)
 
@@ -80,7 +81,7 @@ if __name__ == "__main__":
         print(Fore.CYAN + "Welcome, " + name)
         option = input(
             Fore.CYAN
-            + "\n1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n6. Check Tokens \n7. Recycled Chat In Servers \n"
+            + "\n1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n6. Check Tokens \n7. Recycled Chat In Servers \n8. Giveaways\n"
         )
         if option == "1":
             token = config["main_account_token"]
@@ -89,6 +90,7 @@ if __name__ == "__main__":
             server_id = config["chat"]["server_id"]
             message_delay = config["chat"]["message_delay"]
             delete_message_delay = config["chat"]["delete_message_delay"]
+            delete = config["chat"]["delete"]
             ServerChat(
                 token,
                 message_list,
@@ -96,6 +98,7 @@ if __name__ == "__main__":
                 server_id,
                 message_delay,
                 delete_message_delay,
+                delete,
             )
         elif option == "2":
             token = config["main_account_token"]
@@ -118,7 +121,7 @@ if __name__ == "__main__":
                 proxy_pool,
             )
         elif option == "3":
-            ctypes.windll.kernel32.SetConsoleTitleW("Predita WL - Manual Mode")
+            ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL - Manual Mode")
             user_accounts = read_accounts(manual_accounts_filename)
             ManualMode(user_accounts, proxy_pool)
         elif option == "4":
@@ -162,7 +165,7 @@ if __name__ == "__main__":
                 proxy_pool,
             )
         elif option == "6":
-            ctypes.windll.kernel32.SetConsoleTitleW("Predita WL - Account Checker")
+            ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL - Account Checker")
             user_accounts = read_accounts(accounts_filename)
             da = DiscordAccount()
             da.account_checker(user_accounts, proxy_pool)
@@ -175,5 +178,10 @@ if __name__ == "__main__":
             RecycledChat(
                 token, channel_id, server_id, message_delay, delete_message_delay
             )
+        elif option == "8":
+            ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL - Giveaways Monitor")
+            token = config["main_account_token"]
+            webhook_url = config["webhook_url"]
+            giveaway_monitor(token, webhook_url)
     else:
-        print("INVALID KEY")
+        input("INVALID KEY")
