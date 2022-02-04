@@ -1,26 +1,28 @@
 {
-  "license_key": "DEVELOPMENT",
-  "main_account_token": "NTY4NTc2Mjc2NDYyNDM2MzUy.YebT8g.5X_m-3STD5-0A7w-IG6Gs2Uv6Rg",
+  "license_key": "GK9YU#-%234S@-OC9NBR-$^^Z@M-WA^ZVD-BWY$IN",
+  "main_account_token": "Mjk4ODk2MjU4NzU0NDEyNTQ0.Yf0u-A.uWfR9JBvvTEAZw3T-tX14OEqYjQ",
+  "webhook_url": "https://discord.com/api/webhooks/939153019969343558/M6B3oPXTsfvG17gjWNh8FystYAFSEkVrEWfLLuFmFb__9vbxVlogC0uG61_pqzCLQeRk",
   "join_server_with_code": {
-    "server_invite_code": "kittycryptogang",
-    "server_id": "925326431532245042",
-    "verification_channel_id": "926279412536729660",
-    "server_verification_code": "QcngK8",
-    "join_server_delay": 10
+    "server_invite_code": "jJAQtJuY",
+    "server_id": "918791813685444618",
+    "verification_channel_id": "933027821113204756",
+    "server_verification_code": "WJwpSw",
+    "join_server_delay": 1
   },
   "react_to_join_server": {
-    "server_invite_code": "VqX5Q5pH",
-    "server_id": "917492584492961862",
-    "verification_channel_id": "917694918267400192",
-    "verification_message_id": "917704686759456768",
-    "react_verification_btn_id": "%F0%9F%A4%96",
+    "server_invite_code": "Rmpmzjae",
+    "server_id": "918791813685444618",
+    "verification_channel_id": "929676263680004106",
+    "verification_message_id": "932349982802051102",
+    "react_verification_btn_id": "%E2%9C%85",
     "join_server_delay": 10
   },
   "chat": {
-    "server_id": "917696168568434699",
-    "channel_id": "782265110340960276",
+    "server_id": "921486169064218684",
+    "channel_id": "921486169584320560",
     "message_delay": 120,
-    "delete_message_delay": 120
+    "delete_message_delay": 120,
+    "delete": false
   },
   "message_list": [
     "hello",

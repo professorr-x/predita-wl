@@ -11,13 +11,13 @@ def RecycledChat(token, channel_id, server_id, delay, delete_message_delay):
     disc = Discord()
     channel_name = disc.get_channel_name(token, channel_id)
     name = disc.get_server_name(token, server_id)
-    title = "Predita WL - Chat - {} {}".format(channel_name, name)
+    title = "Preditah WL - Chat - {} {}".format(channel_name, name)
     ctypes.windll.kernel32.SetConsoleTitleW(title)
     da = DiscordAccount()
     if token:
         da.set_token(token)
         while True:
-            message = disc.get_message(token, channel_id)
+            message = disc.get_messages(token, channel_id)
             sent_message = da.send_message(channel_id, message)
             if sent_message != False:
                 print(
@@ -57,14 +57,16 @@ def RecycledChat(token, channel_id, server_id, delay, delete_message_delay):
                 )
                 time.sleep(delay)
     else:
-        print(Fore.RED + "[{}] No Token Provided".format(str(datetime.now())))
+        input(Fore.RED + "[{}] No Token Provided".format(str(datetime.now())))
 
 
-def ServerChat(token, message_list, channel_id, server_id, delay, delete_message_delay):
+def ServerChat(
+    token, message_list, channel_id, server_id, delay, delete_message_delay, delete
+):
     disc = Discord()
     channel_name = disc.get_channel_name(token, channel_id)
     name = disc.get_server_name(token, server_id)
-    title = "Predita WL - Chat - {} {}".format(channel_name, name)
+    title = "Preditah WL - Chat - {} {}".format(channel_name, name)
     ctypes.windll.kernel32.SetConsoleTitleW(title)
     da = DiscordAccount()
     if token:
@@ -81,29 +83,31 @@ def ServerChat(token, message_list, channel_id, server_id, delay, delete_message
                     )
                     channel_id = sent_message["channel_id"]
                     message_id = sent_message["id"]
-                    print(
-                        Fore.CYAN
-                        + "[{}] Delay for {}s before deleting".format(
-                            str(datetime.now()), delete_message_delay
+                    if delete:
+                        print(
+                            Fore.CYAN
+                            + "[{}] Delay for {}s before deleting".format(
+                                str(datetime.now()), delete_message_delay
+                            )
                         )
-                    )
-                    time.sleep(delete_message_delay)
-                    deleted_msg = da.delete_message(channel_id, message_id)
 
-                    if deleted_msg:
-                        print(
-                            Fore.GREEN
-                            + "[{}] Successfully Deleted Message".format(
-                                str(datetime.now())
+                        time.sleep(delete_message_delay)
+                        deleted_msg = da.delete_message(channel_id, message_id)
+
+                        if deleted_msg:
+                            print(
+                                Fore.GREEN
+                                + "[{}] Successfully Deleted Message".format(
+                                    str(datetime.now())
+                                )
                             )
-                        )
-                    else:
-                        print(
-                            Fore.RED
-                            + "[{}] Unable To Delete Message".format(
-                                str(datetime.now())
+                        else:
+                            print(
+                                Fore.RED
+                                + "[{}] Unable To Delete Message".format(
+                                    str(datetime.now())
+                                )
                             )
-                        )
                     print(
                         Fore.CYAN
                         + "[{}] Delay for {}s, before next message".format(
@@ -112,4 +116,4 @@ def ServerChat(token, message_list, channel_id, server_id, delay, delete_message
                     )
                     time.sleep(delay)
     else:
-        print(Fore.RED + "[{}] No Token Provided".format(str(datetime.now())))
+        input(Fore.RED + "[{}] No Token Provided".format(str(datetime.now())))

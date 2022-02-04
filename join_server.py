@@ -34,7 +34,7 @@ def JoinServer(
     disc = Discord()
     name = disc.get_server_name(token, server_id)
     for token in user_accounts:
-        title = "Predita WL - {} Invites - {}/{}".format(
+        title = "Preditah WL - {} Invites - {}/{}".format(
             name, verified_accounts, counter
         )
         ctypes.windll.kernel32.SetConsoleTitleW(title)
@@ -112,7 +112,7 @@ def JoinServerReact(
     verified_accounts = 0
     counter = 0
     for token in user_accounts:
-        title = "Predita WL - {} Invites - {}/{}".format(
+        title = "Preditah WL - {} Invites - {}/{}".format(
             name, verified_accounts, counter
         )
         ctypes.windll.kernel32.SetConsoleTitleW(title)
@@ -167,7 +167,7 @@ def JoinServerReactConfirmation(
     verified_accounts = 0
     counter = 0
     for token in user_accounts:
-        title = "Predita WL - {} Invites - {}/{}".format(
+        title = "Preditah WL - {} Invites - {}/{}".format(
             name, verified_accounts, counter
         )
         ctypes.windll.kernel32.SetConsoleTitleW(title)
