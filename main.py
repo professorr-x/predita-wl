@@ -16,7 +16,6 @@ from giveaways import giveaway_monitor
 
 ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL")
 colorama.init()
-init(autoreset=True)
 
 config_filename = os.path.join(os.path.dirname(sys.executable), "config.json")
 accounts_filename = os.path.join(os.path.dirname(sys.executable), "accounts.txt")
