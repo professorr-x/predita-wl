@@ -50,7 +50,7 @@ def GetProxies():
 
 
 def key_check(key):
-    url = "http://78.141.225.199:8010/key"
+    url = "https://stage.api.solseeker.xyz/key"
     payload = {"key": key}
     headers = {"accept": "application/json"}
     try:
@@ -76,8 +76,8 @@ if __name__ == "__main__":
     if user != None:
         token = config["main_account_token"]
         disc = Discord()
-        name = disc.get_user(token, user["discord_id"])
-        print(Fore.CYAN + "Welcome, " + name)
+        # name = disc.get_user(token, user["discord_id"])
+        print(Fore.CYAN + "Welcome")
         option = input(
             Fore.CYAN
             + "\n1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n6. Check Tokens \n7. Recycled Chat In Servers \n8. Giveaways\n"
