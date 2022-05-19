@@ -72,115 +72,111 @@ proxy_pool = cycle(proxies)
 
 if __name__ == "__main__":
     print(Fore.CYAN + "\nPREDITAH \n")
-    user = key_check(config["license_key"])
-    if user != None:
+    token = config["main_account_token"]
+    disc = Discord()
+    # name = disc.get_user(token, user["discord_id"])
+    print(Fore.CYAN + "Welcome")
+    option = input(
+        Fore.CYAN
+        + "\n1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n6. Check Tokens \n7. Recycled Chat In Servers \n8. Giveaways\n"
+    )
+    if option == "1":
         token = config["main_account_token"]
-        disc = Discord()
-        # name = disc.get_user(token, user["discord_id"])
-        print(Fore.CYAN + "Welcome")
-        option = input(
-            Fore.CYAN
-            + "\n1. Silent Chat In Servers \n2. Join Server & Verify w/ Code \n3. Manual Mode \n4. Join Server By Reacting To Message \n5. Join Server By Confirming T&C And React To Message \n6. Check Tokens \n7. Recycled Chat In Servers \n8. Giveaways\n"
+        message_list = config["message_list"]
+        channel_id = config["chat"]["channel_id"]
+        server_id = config["chat"]["server_id"]
+        message_delay = config["chat"]["message_delay"]
+        delete_message_delay = config["chat"]["delete_message_delay"]
+        delete = config["chat"]["delete"]
+        ServerChat(
+            token,
+            message_list,
+            channel_id,
+            server_id,
+            message_delay,
+            delete_message_delay,
+            delete,
         )
-        if option == "1":
-            token = config["main_account_token"]
-            message_list = config["message_list"]
-            channel_id = config["chat"]["channel_id"]
-            server_id = config["chat"]["server_id"]
-            message_delay = config["chat"]["message_delay"]
-            delete_message_delay = config["chat"]["delete_message_delay"]
-            delete = config["chat"]["delete"]
-            ServerChat(
-                token,
-                message_list,
-                channel_id,
-                server_id,
-                message_delay,
-                delete_message_delay,
-                delete,
-            )
-        elif option == "2":
-            token = config["main_account_token"]
-            user_accounts = read_accounts(accounts_filename)
-            invite_code = config["join_server_with_code"]["server_invite_code"]
-            server_id = config["join_server_with_code"]["server_id"]
-            channel_id = config["join_server_with_code"]["verification_channel_id"]
-            verification_code = config["join_server_with_code"][
-                "server_verification_code"
-            ]
-            join_server_delay = config["join_server_with_code"]["join_server_delay"]
-            JoinServer(
-                token,
-                user_accounts,
-                invite_code,
-                server_id,
-                channel_id,
-                verification_code,
-                join_server_delay,
-                proxy_pool,
-            )
-        elif option == "3":
-            ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL - Manual Mode")
-            user_accounts = read_accounts(manual_accounts_filename)
-            ManualMode(user_accounts, proxy_pool)
-        elif option == "4":
-            token = config["main_account_token"]
-            user_accounts = read_accounts(accounts_filename)
-            server_invite_id = config["react_to_join_server"]["server_invite_code"]
-            server_id = config["react_to_join_server"]["server_id"]
-            channel_id = config["react_to_join_server"]["verification_channel_id"]
-            message_id = config["react_to_join_server"]["verification_message_id"]
-            react_btn = config["react_to_join_server"]["react_verification_btn_id"]
-            delay = config["react_to_join_server"]["join_server_delay"]
-            JoinServerReact(
-                token,
-                user_accounts,
-                server_invite_id,
-                server_id,
-                channel_id,
-                message_id,
-                react_btn,
-                delay,
-                proxy_pool,
-            )
-        elif option == "5":
-            token = config["main_account_token"]
-            user_accounts = read_accounts(accounts_filename)
-            server_invite_id = config["react_to_join_server"]["server_invite_code"]
-            server_id = config["react_to_join_server"]["server_id"]
-            channel_id = config["react_to_join_server"]["verification_channel_id"]
-            message_id = config["react_to_join_server"]["verification_message_id"]
-            react_btn = config["react_to_join_server"]["react_verification_btn_id"]
-            delay = config["react_to_join_server"]["join_server_delay"]
-            JoinServerReactConfirmation(
-                token,
-                user_accounts,
-                server_id,
-                server_invite_id,
-                channel_id,
-                message_id,
-                react_btn,
-                delay,
-                proxy_pool,
-            )
-        elif option == "6":
-            ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL - Account Checker")
-            user_accounts = read_accounts(accounts_filename)
-            da = DiscordAccount()
-            da.account_checker(user_accounts, proxy_pool)
-        elif option == "7":
-            token = config["main_account_token"]
-            channel_id = config["chat"]["channel_id"]
-            server_id = config["chat"]["server_id"]
-            message_delay = config["chat"]["message_delay"]
-            delete_message_delay = config["chat"]["delete_message_delay"]
-            RecycledChat(
-                token, channel_id, server_id, message_delay, delete_message_delay
-            )
-        elif option == "8":
-            ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL - Giveaways Monitor")
-            token = config["main_account_token"]
-            webhook_url = config["webhook_url"]
-            giveaway_monitor(token, webhook_url)
-    else:
-        input("INVALID KEY")
+    elif option == "2":
+        token = config["main_account_token"]
+        user_accounts = read_accounts(accounts_filename)
+        invite_code = config["join_server_with_code"]["server_invite_code"]
+        server_id = config["join_server_with_code"]["server_id"]
+        channel_id = config["join_server_with_code"]["verification_channel_id"]
+        verification_code = config["join_server_with_code"][
+            "server_verification_code"
+        ]
+        join_server_delay = config["join_server_with_code"]["join_server_delay"]
+        JoinServer(
+            token,
+            user_accounts,
+            invite_code,
+            server_id,
+            channel_id,
+            verification_code,
+            join_server_delay,
+            proxy_pool,
+        )
+    elif option == "3":
+        ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL - Manual Mode")
+        user_accounts = read_accounts(manual_accounts_filename)
+        ManualMode(user_accounts, proxy_pool)
+    elif option == "4":
+        token = config["main_account_token"]
+        user_accounts = read_accounts(accounts_filename)
+        server_invite_id = config["react_to_join_server"]["server_invite_code"]
+        server_id = config["react_to_join_server"]["server_id"]
+        channel_id = config["react_to_join_server"]["verification_channel_id"]
+        message_id = config["react_to_join_server"]["verification_message_id"]
+        react_btn = config["react_to_join_server"]["react_verification_btn_id"]
+        delay = config["react_to_join_server"]["join_server_delay"]
+        JoinServerReact(
+            token,
+            user_accounts,
+            server_invite_id,
+            server_id,
+            channel_id,
+            message_id,
+            react_btn,
+            delay,
+            proxy_pool,
+        )
+    elif option == "5":
+        token = config["main_account_token"]
+        user_accounts = read_accounts(accounts_filename)
+        server_invite_id = config["react_to_join_server"]["server_invite_code"]
+        server_id = config["react_to_join_server"]["server_id"]
+        channel_id = config["react_to_join_server"]["verification_channel_id"]
+        message_id = config["react_to_join_server"]["verification_message_id"]
+        react_btn = config["react_to_join_server"]["react_verification_btn_id"]
+        delay = config["react_to_join_server"]["join_server_delay"]
+        JoinServerReactConfirmation(
+            token,
+            user_accounts,
+            server_id,
+            server_invite_id,
+            channel_id,
+            message_id,
+            react_btn,
+            delay,
+            proxy_pool,
+        )
+    elif option == "6":
+        ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL - Account Checker")
+        user_accounts = read_accounts(accounts_filename)
+        da = DiscordAccount()
+        da.account_checker(user_accounts, proxy_pool)
+    elif option == "7":
+        token = config["main_account_token"]
+        channel_id = config["chat"]["channel_id"]
+        server_id = config["chat"]["server_id"]
+        message_delay = config["chat"]["message_delay"]
+        delete_message_delay = config["chat"]["delete_message_delay"]
+        RecycledChat(
+            token, channel_id, server_id, message_delay, delete_message_delay
+        )
+    elif option == "8":
+        ctypes.windll.kernel32.SetConsoleTitleW("Preditah WL - Giveaways Monitor")
+        token = config["main_account_token"]
+        webhook_url = config["webhook_url"]
+        giveaway_monitor(token, webhook_url)
